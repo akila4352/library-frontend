@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import supabase from '../../../helper/superbaseClient';
 import './book.css';
 import Bookitem from '../BookList/bookitem';
 
 const Book = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state/
+  const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const { data, error } = await supabase.from('books').select('*');
-        if (error) throw error;
+        const response = await fetch('http://localhost:5000/api/books');
+        if (!response.ok) {
+          throw new Error('Failed to load books');
+        }
+        const data = await response.json();
         setBooks(data);
       } catch (error) {
         setError("Failed to load books.");

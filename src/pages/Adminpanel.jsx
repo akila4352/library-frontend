@@ -14,19 +14,28 @@ function AdminPanel() {
   const [success, setSuccess] = useState("");
   const [view, setView] = useState('upload'); // State to manage which view to show
 
-  useEffect(() => {
-    const fetchBooks = async () => {
+  // Define fetchBooks and fetchBorrowedBooks outside useEffect so they can be used elsewhere
+  const fetchBooks = async () => {
+    try {
       const response = await fetch('http://localhost:5000/api/books');
       const data = await response.json();
-      setBooks(data);
-    };
+      setBooks(Array.isArray(data) ? data : []); // Ensure data is an array
+    } catch (error) {
+      console.error("Failed to fetch books:", error);
+    }
+  };
 
-    const fetchBorrowedBooks = async () => {
+  const fetchBorrowedBooks = async () => {
+    try {
       const response = await fetch('http://localhost:5000/api/borrowedbooks');
       const data = await response.json();
-      setBorrowedBooks(data);
-    };
+      setBorrowedBooks(Array.isArray(data) ? data : []); // Ensure data is an array
+    } catch (error) {
+      console.error("Failed to fetch borrowed books:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchBooks();
     fetchBorrowedBooks();
 
@@ -57,57 +66,68 @@ function AdminPanel() {
 
     const { title, description, is_available, imgsrc } = bookData;
 
-    const response = await fetch('http://localhost:5000/api/books', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, description, is_available, imgsrc }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setBookData({
-        title: '',
-        description: '',
-        is_available: true,
-        imgsrc: ''
+    try {
+      const response = await fetch('http://localhost:5000/api/books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description, is_available, imgsrc }),
       });
-      setSuccess("Book added successfully!");
-    } else {
-      setError("Failed to add book.");
+
+      if (response.ok) {
+        setBookData({
+          title: '',
+          description: '',
+          is_available: true,
+          imgsrc: ''
+        });
+        setSuccess("Book added successfully!");
+        fetchBooks(); // Refresh the book list
+      } else {
+        setError("Failed to add book.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
     }
   };
 
   const deleteBook = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/books/${id}`, {
-      method: 'DELETE',
-    });
+    try {
+      const response = await fetch(`http://localhost:5000/api/books/${id}`, {
+        method: 'DELETE',
+      });
 
-    if (response.ok) {
-      setBooks(books.filter((book) => book.id !== id));
-    } else {
-      setError("Failed to delete book.");
+      if (response.ok) {
+        setBooks(books.filter((book) => book.id !== id));
+      } else {
+        setError("Failed to delete book.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
     }
   };
 
   const updateStatus = async (id, status) => {
-    const response = await fetch(`http://localhost:5000/api/borrowedbooks/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
-    });
+    try {
+      const response = await fetch(`http://localhost:5000/api/borrowedbooks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
 
-    if (response.ok) {
-      setBorrowedBooks(
-        borrowedBooks.map((book) =>
-          book.id === id ? { ...book, status } : book
-        )
-      );
-      setSuccess("Status updated successfully!");
-    } else {
-      setError("Failed to update status.");
+      if (response.ok) {
+        setBorrowedBooks(
+          borrowedBooks.map((book) =>
+            book.id === id ? { ...book, status } : book
+          )
+        );
+        setSuccess("Status updated successfully!");
+      } else {
+        setError("Failed to update status.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
     }
-  };
+  }
 
   return (
     <div className="container mt-5">

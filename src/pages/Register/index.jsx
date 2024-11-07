@@ -1,4 +1,3 @@
-// Register.js
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
 import './index.css';
@@ -44,21 +43,21 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validatePassword(formData.password)) {
       setPasswordError('Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.');
       return;
     } else {
       setPasswordError('');
     }
-
+  
     if (!validateEmail(formData.email)) {
       setEmailError('Please enter a valid Gmail address.');
       return;
     } else {
       setEmailError('');
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
@@ -67,14 +66,22 @@ const Register = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       const result = await response.json();
-      setRegistrationMessage(result.message);
+  
+      if (response.ok) {
+        setRegistrationMessage(result.message || 'Registration successful!');
+      } else {
+        // Handle error: Show error message returned by the server
+        setRegistrationMessage(result.message || 'Registration failed. Please try again.');
+      }
     } catch (error) {
       console.error('Error registering user:', error);
       setRegistrationMessage('An unexpected error occurred during registration.');
     }
   };
+  
+  
 
   return (
     <div>
@@ -119,7 +126,7 @@ const Register = () => {
                   <input type="password" className="form-control" id="password" value={formData.password} onChange={handleInputChange} required />
                   {passwordError && <small className="text-danger">{passwordError}</small>}
                 </div>
-                  <div className="col-12">
+                <div className="col-12">
                   <label htmlFor="address" className="form-label">Address</label>
                   <input type="text" className="form-control" id="address" value={formData.address} onChange={handleInputChange} placeholder="1234 Main St" required />
                 </div>
