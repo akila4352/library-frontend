@@ -1,0 +1,72 @@
+.para {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgb(168, 167, 167);
+  text-align: center;
+  font-size: medium;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-container {
+  padding: 50px;
+}
+
+.color {
+  color: aliceblue;
+}
+.borrow-button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.borrow-button:hover {
+  background-color: #333;
+}
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+
+.social-icon2 {
+  width: 5cm; /* Width set to 5 cm */
+  height: 4cm; /* Height set to 4 cm */
+  object-fit: cover; /* Ensures the image covers the specified area without distortion */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: shadow for visual appeal */
+}
+
+.footer__title1 {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+.para {
+  font-size: 0.9em;
+  color: #666;
+  margin: 5px 0;
+}
+
+.borrow-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.borrow-button:hover {
+  background-color: #0056b3;
+}
