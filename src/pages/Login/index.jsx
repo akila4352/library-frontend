@@ -42,7 +42,7 @@ const Login = () => {
     }
     
     try {
-      const response = await fetch('https://https://backend-folder.vercel.app//api/auth/login', {
+      const response = await fetch('https://backend-folder.vercel.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
