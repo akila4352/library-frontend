@@ -27,7 +27,7 @@ function AdminPanel() {
 
   const fetchBorrowedBooks = async () => {
     try {
-      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/borrowedbooks');
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/borrowedbooks');
       const data = await response.json();
       setBorrowedBooks(Array.isArray(data) ? data : []); // Ensure data is an array
     } catch (error) {
