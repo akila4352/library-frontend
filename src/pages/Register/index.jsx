@@ -59,7 +59,7 @@ const Register = () => {
     }
   
     try {
-      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/auth/register', {
+      const response = await fetch('https://your-heroku-app-url/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,6 @@ const Register = () => {
       if (response.ok) {
         setRegistrationMessage(result.message || 'Registration successful!');
       } else {
-        // Handle error: Show error message returned by the server
         setRegistrationMessage(result.message || 'Registration failed. Please try again.');
       }
     } catch (error) {
@@ -80,7 +79,6 @@ const Register = () => {
       setRegistrationMessage('An unexpected error occurred during registration.');
     }
   };
-  
   
 
   return (
