@@ -59,7 +59,7 @@ const Register = () => {
     }
   
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
