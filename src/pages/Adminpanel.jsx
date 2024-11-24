@@ -92,7 +92,7 @@ function AdminPanel() {
 
   const deleteBook = async (id) => {
     try {
-      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/${id}`, {
+      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/api/books/${id}`, {
         method: 'DELETE',
       });
 
