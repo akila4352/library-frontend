@@ -10,7 +10,7 @@ const Book = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/books');
+        const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/books');
         if (!response.ok) {
           throw new Error('Failed to load books');
         }
