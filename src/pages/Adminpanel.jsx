@@ -17,7 +17,7 @@ function AdminPanel() {
   // Define fetchBooks and fetchBorrowedBooks outside useEffect so they can be used elsewhere
   const fetchBooks = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/books');
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/books');
       const data = await response.json();
       setBooks(Array.isArray(data) ? data : []); // Ensure data is an array
     } catch (error) {
@@ -27,7 +27,7 @@ function AdminPanel() {
 
   const fetchBorrowedBooks = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/borrowedbooks');
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/borrowedbooks');
       const data = await response.json();
       setBorrowedBooks(Array.isArray(data) ? data : []); // Ensure data is an array
     } catch (error) {
@@ -67,7 +67,7 @@ function AdminPanel() {
     const { title, description, is_available, imgsrc } = bookData;
 
     try {
-      const response = await fetch('http://localhost:5000/api/books', {
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, is_available, imgsrc }),
@@ -81,7 +81,7 @@ function AdminPanel() {
           imgsrc: ''
         });
         setSuccess("Book added successfully!");
-        fetchBooks(); // Refresh the book list
+        fetchBooks(); // Refresh the book liste
       } else {
         setError("Failed to add book.");
       }
@@ -92,7 +92,7 @@ function AdminPanel() {
 
   const deleteBook = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/books/${id}`, {
+      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/${id}`, {
         method: 'DELETE',
       });
 
@@ -108,7 +108,7 @@ function AdminPanel() {
 
   const updateStatus = async (id, status) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/borrowedbooks/${id}`, {
+      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/api/borrowedbooks/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),

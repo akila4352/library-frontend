@@ -16,7 +16,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
   // Send OTP to email through backend API
   const sendOtpToEmail = async (email) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/send-otp', {
+      const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/auth/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
