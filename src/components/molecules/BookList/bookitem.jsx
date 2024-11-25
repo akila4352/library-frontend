@@ -7,7 +7,26 @@ const Bookitem = ({ imgSrc, title, description, bookId }) => {
 
   const handleBorrow = async () => {
     try {
-      // Insert a new borrowed book entry into the database
+      // Check if the user has an unreturned book
+      const { data: borrowedBooks, error: fetchError } = await supabase
+        .from('borrowedbooks')
+        .select('*')
+        .eq('user_id', 1) // Replace with the actual user ID
+        .eq('status', false); // Assuming false indicates unreturned
+  
+      if (fetchError) {
+        console.error("Error checking borrowed books:", fetchError);
+        alert("Failed to check borrowed books.");
+        return;
+      }
+  
+      // Prevent borrowing if there’s an unreturned book
+      if (borrowedBooks.length > 0) {
+        alert("You must return your current borrowed book before borrowing another.");
+        return;
+      }
+  
+      // Proceed to borrow the book if no unreturned books
       const { data, error } = await supabase
         .from('borrowedbooks')
         .insert([
