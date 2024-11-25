@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import bcrypt from 'bcryptjs';
-import supabase from '../../helper/superbaseClient'; 
 import CryptoJS from 'crypto-js';
+import supabase from '../../helper/superbaseClient';
+
 const ForgotPasswordModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -11,9 +11,8 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpConfirmed, setIsOtpConfirmed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [generatedOtp, setGeneratedOtp] = useState(null); // Store the OTP for verification
+  const [generatedOtp, setGeneratedOtp] = useState(null);
 
-  // Send OTP to email through backend API
   const sendOtpToEmail = async (email) => {
     try {
       const response = await fetch('https://test2app-e9c794ac2195.herokuapp.com/api/auth/send-otp', {
@@ -26,10 +25,10 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setGeneratedOtp(data.otp); // Store the OTP sent to the user
+        setGeneratedOtp(data.otp);
         return true;
       } else {
-        setErrorMessage(data.message || 'Failed to send OTP');
+        setErrorMessage(data.message || 'Failed to send OTP.');
         return false;
       }
     } catch (error) {
@@ -50,14 +49,12 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       startTimer();
       setIsOtpSent(true);
       setErrorMessage('');
-    } else {
-      setErrorMessage('Failed to send OTP. Please try again.');
     }
   };
 
   const handleConfirmOTP = (e) => {
     e.preventDefault();
-    if (otp === generatedOtp) { // Match entered OTP with generated OTP
+    if (otp.trim() === generatedOtp?.toString()) {
       setIsOtpConfirmed(true);
       setErrorMessage('');
     } else {
@@ -71,10 +68,8 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       setErrorMessage('Password must be at least 8 characters long.');
       return;
     }
-  
-    // Hash the password with SHA-256
+
     const hashedPassword = CryptoJS.SHA256(newPassword).toString();
-  
     const success = await resetPassword(email, hashedPassword);
     if (success) {
       alert('Password reset successfully. You can now log in with your new password.');
@@ -83,13 +78,14 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       setErrorMessage('Failed to reset password. Please try again.');
     }
   };
-  
+
   const resetPassword = async (email, hashedPassword) => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('users')
         .update({ password: hashedPassword })
         .eq('email', email);
+
       if (error) {
         console.error('Error updating password:', error.message);
         return false;
@@ -131,11 +127,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Forgot Password</h5>
-            <button
-              type="button"
-              className="btn-close"
-              onClick={onClose}
-            ></button>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
@@ -205,13 +197,11 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
                 </div>
                 <div className="mb-3">
                   <small className="form-text text-muted">
-                    Your password should be at least 8 characters long and include a mix of uppercase letters, lowercase letters, numbers, and special characters for better security.
+                    Password must be at least 8 characters and include a mix of letters, numbers, and special characters.
                   </small>
                 </div>
                 <div className="d-flex justify-content-center">
-                  <button type="submit" className="btn btn-primary">
-                    Reset Password
-                  </button>
+                  <button type="submit" className="btn btn-primary">Reset Password</button>
                 </div>
               </form>
             )}
