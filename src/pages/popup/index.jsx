@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs';
 import supabase from '../../helper/superbaseClient'; 
-
+import CryptoJS from 'crypto-js';
 const ForgotPasswordModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -71,7 +71,10 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       setErrorMessage('Password must be at least 8 characters long.');
       return;
     }
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+    // Hash the password with SHA-256
+    const hashedPassword = CryptoJS.SHA256(newPassword).toString();
+  
     const success = await resetPassword(email, hashedPassword);
     if (success) {
       alert('Password reset successfully. You can now log in with your new password.');
@@ -80,7 +83,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       setErrorMessage('Failed to reset password. Please try again.');
     }
   };
-
+  
   const resetPassword = async (email, hashedPassword) => {
     try {
       const { data, error } = await supabase
