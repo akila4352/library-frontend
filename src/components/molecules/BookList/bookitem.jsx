@@ -2,6 +2,8 @@ import React from 'react';
 import './book.css';
 import supabase from '../../../helper/superbaseClient';
 
+const userId = getLoggedInUserId(); // Replace this with actual user ID retrieval logic
+
 const Bookitem = ({ imgSrc, title, description, bookId }) => {
   const userId = 1; // Replace with the actual user ID if available
 
@@ -32,7 +34,7 @@ const Bookitem = ({ imgSrc, title, description, bookId }) => {
         .insert([
           {
             book_id: bookId,
-            user_id: 1, // Replace with the actual user ID
+            user_id: userId, // Replace with the actual user ID
             status: false, // Mark as not returned
           },
         ]);
