@@ -4,8 +4,9 @@ import Bookitem from '../BookList/bookitem';
 
 const Book = () => {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const userId = 1; // Replace with actual logic to get the logged-in user's ID
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -40,7 +41,8 @@ const Book = () => {
               imgSrc={book.imgsrc}
               title={book.title}
               description={book.description}
-              bookId={book.id} // Added bookId prop
+              bookId={book.id}
+              userId={userId}
             />
           ))}
         </li>
@@ -51,7 +53,8 @@ const Book = () => {
               imgSrc={book.imgsrc}
               title={book.title}
               description={book.description}
-              bookId={book.id} // Added bookId prop
+              bookId={book.id}
+              userId={userId}
             />
           ))}
         </li>
