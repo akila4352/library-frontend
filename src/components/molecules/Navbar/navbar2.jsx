@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NavItems from "../../atoms/Navitems";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import './styles.css';
 import logo from './logo.png';
 import { useUser } from '../../../pages/User/UserContext'; 
@@ -19,10 +18,10 @@ function Navbar2() {
   const toggleProfilePopup = () => setIsProfileOpen(!isProfileOpen);
 
   useEffect(() => {
-    if (isCartOpen) {
+    if (isCartOpen && user?.id) {
       fetchBorrowedBooks();
     }
-  }, [isCartOpen]);
+  }, [isCartOpen, user]);
 
   const fetchBorrowedBooks = async () => {
     try {
@@ -51,7 +50,6 @@ function Navbar2() {
   };
 
   const handleLogout = () => {
-    // Clear user context and redirect to home
     setUser(null);
     navigate('/');
   };
@@ -132,7 +130,7 @@ function Navbar2() {
                       {borrowedBooks.length > 0 ? (
                         borrowedBooks.map((book) => (
                           <tr key={book.id}>
-                            <td>{book.books.title}</td>
+                            <td>{book.title}</td>
                             <td>{formatDate(book.borrowed_at)}</td>
                             <td>{formatDate(book.return_by)}</td>
                             <td>{book.status ? 'Approved' : 'Not Approved'}</td>
