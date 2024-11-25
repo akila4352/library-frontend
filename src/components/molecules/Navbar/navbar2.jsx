@@ -25,24 +25,22 @@ function Navbar2() {
       fetchBorrowedBooks();
     }
   }, [isCartOpen]);
+// Endpoint to fetch borrowed books
+const fetchBorrowedBooks = async () => {
+  try {
+      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/borrowed-books`);
+      const data = await response.json();
 
-  const fetchBorrowedBooks = async () => {
-    try {
-      const userId = 1; // Replace with the actual user ID
-      const { data, error } = await supabase
-        .from('borrowedbooks')
-        .select('*, books(title)')
-        .eq('user_id', userId);
-
-      if (error) {
-        console.error("Error fetching borrowed books:", error);
+      if (response.ok) {
+          setBorrowedBooks(data.books);
       } else {
-        setBorrowedBooks(data);
+          console.error("Error fetching borrowed books:", data.error);
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error fetching borrowed books:", error);
-    }
-  };
+  }
+};
+
 
   const formatDate = (timestamp) => {
     if (timestamp) {
