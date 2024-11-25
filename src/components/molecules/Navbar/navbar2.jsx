@@ -28,18 +28,21 @@ function Navbar2() {
 // Endpoint to fetch borrowed books
 const fetchBorrowedBooks = async () => {
   try {
-      const response = await fetch(`https://test2app-e9c794ac2195.herokuapp.com/borrowed-books?userId=${user?.id}`);
-      const data = await response.json();
+    const response = await fetch(
+      `https://test2app-e9c794ac2195.herokuapp.com/borrowed-books?userId=${user?.id}`
+    );
+    const data = await response.json();
 
-      if (response.ok) {
-          setBorrowedBooks(data.books);
-      } else {
-          console.error("Error fetching borrowed books:", data.error);
-      }
+    if (response.ok) {
+      setBorrowedBooks(data.books || []); // Handle case where `books` is undefined
+    } else {
+      console.error('Error fetching borrowed books:', data.error);
+    }
   } catch (error) {
-      console.error("Error fetching borrowed books:", error);
+    console.error('Error fetching borrowed books:', error);
   }
 };
+
 
 
   const formatDate = (timestamp) => {
